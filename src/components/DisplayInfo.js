@@ -18,7 +18,7 @@ export default class DisplayInfo extends Component {
             onClick={() => {
               this.handleHideShow();
             }}
-            className={this.state.isShowListUser === true ? "red" : "green"}
+            className={this.state.isShowListUser === true ? "purple" : "green"}
           >
             {this.state.isShowListUser === true
               ? "Hide User List"
