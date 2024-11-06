@@ -29,7 +29,7 @@ export default class DisplayInfo extends Component {
           </span>
         </div>
         {this.state.isShowListUser && (
-          <div>
+          <>
             {listUsers.map((item) => {
               return (
                 <div>
@@ -44,7 +44,7 @@ export default class DisplayInfo extends Component {
                 </div>
               );
             })}
-          </div>
+          </>
         )}
       </div>
     );
