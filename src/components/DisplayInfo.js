@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./DisplayInfo.scss";
+import logo from "../logo.svg";
 
 export default class DisplayInfo extends Component {
   state = {
@@ -14,6 +15,7 @@ export default class DisplayInfo extends Component {
     const { listUsers } = this.props;
     return (
       <div className="display-info-container">
+        <img src={logo} alt="" />
         <div>
           <span
             onClick={() => {
