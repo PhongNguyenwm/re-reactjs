@@ -15,7 +15,7 @@ export default class DisplayInfo extends Component {
     const { listUsers } = this.props;
     return (
       <div className="display-info-container">
-        <img src={logo} alt="" />
+        {/* <img src={logo} alt="" /> */}
         <div>
           <span
             onClick={() => {
@@ -32,15 +32,19 @@ export default class DisplayInfo extends Component {
           <>
             {listUsers.map((item) => {
               return (
-                <div>
-                  <div
-                    key={item.id}
-                    className={+item.age > 18 ? "green" : "red"}
-                  >
+                <div key={item.id} className={+item.age > 18 ? "green" : "red"}>
+                  <div>
                     <div>My name's {item.name} </div>
                     <div>I'm {item.age} years old </div>
-                    <br />
                   </div>
+                  <div>
+                    <button
+                      onClick={() => this.props.handleDeleteUser(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <br />
                 </div>
               );
             })}
