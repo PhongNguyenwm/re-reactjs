@@ -3,15 +3,38 @@ import "./DisplayInfo.scss";
 import logo from "../logo.svg";
 
 export default class DisplayInfo extends Component {
-  state = {
-    isShowListUser: true,
-  };
+  // syntax OOB:
+  constructor(props) {
+    console.log("constructor:1");
+    super(props);
+    // babel compiler
+    this.state = {
+      isShowListUser: true,
+    };
+  }
+
+  componentDidMount() {
+    console.log("Component did mount");
+    setTimeout(() => {
+      document.title = "did mount";
+    }, 3000);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentDidUpdate", this.props, prevProps);
+    if (this.props.listUsers !== prevProps.listUsers) {
+      if (this.props.listUsers.length === 5) {
+        console.log("you got five users");
+      }
+    }
+  }
   handleHideShow = () => {
     this.setState({
       isShowListUser: !this.state.isShowListUser,
     });
   };
   render() {
+    console.log("render");
     const { listUsers } = this.props;
     return (
       <div className="display-info-container">
