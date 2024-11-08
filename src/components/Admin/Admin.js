@@ -1,13 +1,7 @@
 import React from "react";
-import Header from "../Header/Header";
 
 const Admin = (props) => {
-  return (
-    <div>
-      <Header />
-      Admin component
-    </div>
-  );
+  return <div>Admin component</div>;
 };
 
 export default Admin;
