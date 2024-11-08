@@ -8,11 +8,39 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (min-width: 1350px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 1350px !important;
+  }
+}
+
 .app-container {
   .header-container {
-    .navbar-nav {
+    .btn-login {
+      border-radius: 5px;
+      margin-right: 15px;
+      padding: 0 20px;
+      border: 1px solid #303030;
+      height: 40px;
+    }
+    .btn-signup {
+      border-radius: 5px;
+      padding: 0 20px;
+      background: #535353;
+      color: #fff;
+      &:hover {
+        background: black;
+      }
+    }
+    .navbar {
+      padding-top: 20px;
       z-index: 10;
       opacity: 0.6;
+      background-color: ragb(0, 0, 0, 0) !important;
       .nav-link {
         &.active {
           color: #00bfff;
@@ -20,10 +48,37 @@ body {
       }
     }
   }
+  .homepage-container {
+    .homepage-content {
+      padding: 100px;
+      position: relative;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .homepage-title {
+      font-size: 36px;
+      font-weight: 700;
+    }
+    .homepage-desc {
+      font-size: 18px;
+    }
+    .homepage-btn {
+      border-radius: 5px;
+      padding: 0 20px;
+      background: #535353;
+      color: #fff;
+      height: 40px;
+      &:hover {
+        background: black;
+      }
+    }
+  }
 }
 
 video {
   position: fixed;
-  bottom: 0;
+  bottom: -30px;
   width: 100vw;
 }
