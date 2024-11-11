@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ModalCreateUser from "./ModalCreateUser";
 import "./ManageUser.scss";
 import { FcPlus } from "react-icons/fc";
-import TableUser from "./TableUser";
 import { getAllUsers, getUserWithPaginate } from "../../../services/apiService";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
@@ -19,8 +18,10 @@ const ManageUser = () => {
 
   const [listUsers, setListUsers] = useState([]);
 
-  const LIMIT_USER = 5;
+  const LIMIT_USER = 1;
   const [pageCount, setPageCount] = useState(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     // fetchListUsers();
@@ -81,6 +82,8 @@ const ManageUser = () => {
               handleClickBtnDelete={handleClickBtnDelete}
               fetchListUsersWithPaginate={fetchListUsersWithPaginate}
               pageCount={pageCount}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         </div>
@@ -88,6 +91,9 @@ const ManageUser = () => {
           show={showModalCreateUser}
           setShow={setShowModalCreateUser}
           fetchListUsers={fetchListUsers}
+          fetchListUsersWithPaginate={fetchListUsersWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
         <ModalUpdateUser
           show={showModalUpdateUser}
@@ -95,6 +101,9 @@ const ManageUser = () => {
           dataUpdate={dataUpdate}
           setDataUpdate={setDataUpdate}
           fetchListUsers={fetchListUsers}
+          fetchListUsersWithPaginate={fetchListUsersWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
         <ModalViewUser
           show={showModalViewUser}
@@ -107,6 +116,9 @@ const ManageUser = () => {
           setShow={setShowModalDeleteUser}
           dataDelete={dataDelete}
           fetchListUsers={fetchListUsers}
+          fetchListUsersWithPaginate={fetchListUsersWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>

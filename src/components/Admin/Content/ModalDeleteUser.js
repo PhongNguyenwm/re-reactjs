@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { deleteUser } from "../../../services/apiService";
@@ -13,7 +12,8 @@ const ModalDeleteUser = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      await props.fetchListUsers();
+      props.setCurrentPage(1);
+      await props.fetchListUsersWithPaginate(1);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
