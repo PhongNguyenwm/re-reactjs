@@ -57,5 +57,19 @@
         background: black;
       }
     }
+    .forgot-pass {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .form-group {
+      position: relative;
+      .icon {
+        position: absolute;
+        right: 3%;
+        top: 38%;
+        cursor: pointer;
+        font-size: 24px;
+      }
+    }
   }
 }

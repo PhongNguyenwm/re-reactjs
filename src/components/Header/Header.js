@@ -9,6 +9,9 @@ const Header = () => {
   const hanldeLogin = () => {
     navigate("/login");
   };
+  const hanldeSignup = () => {
+    navigate("/signup");
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -33,7 +36,9 @@ const Header = () => {
             <button className="btn-login" onClick={() => hanldeLogin()}>
               Log in
             </button>
-            <button className="btn-signup">Sign up</button>
+            <button className="btn-signup" onClick={() => hanldeSignup()}>
+              Sign up
+            </button>
             {/* <NavDropdown title="Settings" id="basic-nav-dropdown">
               <NavDropdown.Item>Log in</NavDropdown.Item>
               <NavDropdown.Item>Log out</NavDropdown.Item>
