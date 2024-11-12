@@ -13,7 +13,25 @@ const Login = (props) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   const handleLogin = async () => {
+    const isValidEmail = validateEmail(email);
+    if (!isValidEmail) {
+      toast.error("Invalid email!");
+      return;
+    }
+    if (!password) {
+      toast.error("Password is required!");
+      return;
+    }
+
     let res = await postLogin(email, password);
     if (res && res.EC === 0) {
       toast.success(res.EM);
