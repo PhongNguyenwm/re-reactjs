@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { doLogin } from "../../redux/action/userAction";
+import { ImSpinner10 } from "react-icons/im";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -24,6 +25,8 @@ const Login = (props) => {
       );
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async () => {
     const isValidEmail = validateEmail(email);
     if (!isValidEmail) {
@@ -34,15 +37,18 @@ const Login = (props) => {
       toast.error("Password is required!");
       return;
     }
+    setIsLoading(true);
 
     let res = await postLogin(email, password);
     if (res && res.EC === 0) {
       dispatch(doLogin(res));
       toast.success(res.EM);
+      setIsLoading(false);
       navigate("/");
     }
     if (res && res.EC !== 0) {
       toast.error(res.EM);
+      setIsLoading(false);
     }
   };
 
@@ -82,7 +88,11 @@ const Login = (props) => {
         </div>
         <span className="forgot-pass">Forgot password?</span>
         <div>
-          <button onClick={() => handleLogin()}>Login</button>
+          <button onClick={() => handleLogin()} disabled={isLoading}>
+            {isLoading === true && <ImSpinner10 className="loader-icon" />}
+
+            <span>Login</span>
+          </button>
         </div>
         <div className="back-homepage">
           <span onClick={() => navigate("/")}>
