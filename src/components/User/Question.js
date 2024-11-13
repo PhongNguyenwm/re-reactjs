@@ -7,17 +7,20 @@ const Question = (props) => {
   if (_.isEmpty(data)) {
     return <></>;
   }
-  console.log(data);
+
+  const handleCheckbox = (e, aId, qId) => {
+    props.handleCheckbox(aId, qId);
+    console.log(aId, qId);
+  };
+
   return (
     <>
-      {data.img && (
+      {data.img ? (
         <div className="q-img">
-          <img
-            src={`data:image/jpeg;base64,${data.img}`}
-            alt=""
-            style={({ width: "300px" }, { height: "200px" })}
-          />
+          <img src={`data:image/jpeg;base64,${data.img}`} alt="" />
         </div>
+      ) : (
+        <div className="q-img"></div>
       )}
       <div className="question">
         Question {index + 1}: {data.questionDesc}?
@@ -28,9 +31,16 @@ const Question = (props) => {
           data.answer.map((item, index) => {
             return (
               <div key={`answer-${index}`} className="a-child">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" />
-                  <label class="form-check-label">{item.description}</label>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={item.isSelected}
+                    onChange={(e) =>
+                      handleCheckbox(e, item.id, data.questionId)
+                    }
+                  />
+                  <label className="form-check-label">{item.description}</label>
                 </div>
               </div>
             );

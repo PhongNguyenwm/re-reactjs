@@ -3,27 +3,48 @@
   gap: 20px;
   padding: 50px 0;
   .left-content {
-    border: 1px solid seagreen;
+    border: 2px solid #ccc;
     width: 70%;
-
+    border-radius: 5px;
+    padding: 20px;
     .title {
       font-size: 30px;
       font-weight: 700;
     }
     .content {
+      text-align: center;
       .question {
         font-size: 20px;
         font-weight: 500;
+        padding: 20px;
+      }
+      .q-img {
+        width: 100%;
+        height: 200px;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+      .answer {
+        .a-child {
+          text-align: left;
+          padding-left: 50px;
+        }
       }
     }
     .footer {
+      margin-top: 20px;
       display: flex;
       gap: 20px;
       justify-content: center;
     }
   }
   .right-content {
-    border: 1px solid purple;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
     width: 30%;
   }
 }
