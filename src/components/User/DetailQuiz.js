@@ -60,7 +60,6 @@ const DetailQuiz = (props) => {
     let question = dataQuizClone.find(
       (item) => +item.questionId === +questionId
     );
-    console.log(question);
     //! 3. Cập nhật trạng thái đã chọn của câu trả lời
     //! if (question && question.answer) { ... }: Kiểm tra xem câu hỏi đã được tìm thấy và có mảng answer (các lựa chọn trả lời) hay không.
     if (question && question.answer) {
@@ -87,6 +86,30 @@ const DetailQuiz = (props) => {
     }
   };
 
+  const handleFinishQuiz = () => {
+    let result = {
+      quizId: +quizId,
+      answers: [],
+    };
+    let answers = [];
+    if (dataQuiz && dataQuiz.length > 0) {
+      dataQuiz.forEach((item) => {
+        let questionId = item.questionId;
+        let userAnswerId = [];
+        item.answers.forEach((item) => {
+          if (item.isSelected) {
+            userAnswerId.push(item.id);
+          }
+        });
+        answers.push({
+          questionId: +questionId,
+          userAnswerId,
+        });
+      });
+      result.answers = answers;
+    }
+  };
+
   return (
     <div className="detail-quiz-container container">
       <div className="left-content">
@@ -109,7 +132,10 @@ const DetailQuiz = (props) => {
           <button className="btn btn-primary" onClick={() => handleNext()}>
             Next
           </button>
-          <button className="btn btn-warning" onClick={() => handleNext()}>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleFinishQuiz()}
+          >
             Finish
           </button>
         </div>
