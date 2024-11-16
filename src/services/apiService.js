@@ -82,10 +82,11 @@ const deleteQuizForAdmin = (id) => {
 
 const postCreateNewQuestionForQuiz = (quizId, desc, img) => {
   const data = new FormData();
-  data.append("quizId", quizId);
+  data.append("quiz_id", quizId);
   data.append("description", desc);
   data.append("questionImage", img);
   return axios.post("api/v1/question", data);
+  console.log(data);
 };
 
 const postCreateNewAnswerForQuestion = (
