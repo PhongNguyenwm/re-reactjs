@@ -8,6 +8,7 @@ import { AiFillMinusSquare } from "react-icons/ai";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import Lightbox from "react-awesome-lightbox";
 
 const Question = (props) => {
   const options = [
@@ -25,6 +26,11 @@ const Question = (props) => {
       answers: [{ id: uuidv4(), description: "", isCorrect: false }],
     },
   ]);
+  const [isPreviewIgm, setIsPreviewIgm] = useState(false);
+  const [dataImgPreview, setDataImgPreview] = useState({
+    title: "",
+    url: "",
+  });
 
   const hanldeAddRemoveQuestion = (type, id) => {
     console.log(type, id);
@@ -112,6 +118,18 @@ const Question = (props) => {
     console.log(questions);
   };
 
+  const handlePreviewImg = (questionId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === questionId);
+    if (index > -1) {
+      setDataImgPreview({
+        title: questionsClone[index].imageName,
+        url: URL.createObjectURL(questionsClone[index].image),
+      });
+      setIsPreviewIgm(true);
+    }
+  };
+
   return (
     <div className="questions-container">
       <div className="title">Manage Questions</div>
@@ -158,9 +176,21 @@ const Question = (props) => {
                       }
                     />
                     <span>
-                      {question.imageName
-                        ? question.imageName
-                        : "0 file is uploaded"}
+                      {question.imageName ? (
+                        <span
+                          className="mx-3"
+                          style={{
+                            cursor: "pointer",
+                            color: "seagreen",
+                            textDecoration: "underline",
+                          }}
+                          onClick={() => handlePreviewImg(question.id)}
+                        >
+                          {question.imageName}
+                        </span>
+                      ) : (
+                        "0 file is uploaded"
+                      )}
                     </span>
                   </div>
                   <div className="btn-add">
@@ -253,6 +283,13 @@ const Question = (props) => {
           </div>
         )}
       </div>
+      {isPreviewIgm === true && (
+        <Lightbox
+          image={dataImgPreview.url}
+          title={dataImgPreview.title}
+          onClose={() => setIsPreviewIgm(false)}
+        />
+      )}
     </div>
   );
 };
