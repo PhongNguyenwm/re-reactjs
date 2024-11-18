@@ -19,7 +19,6 @@ const TableQuiz = (props) => {
     setDataUpdate({});
     setDataDelete({});
     let res = await getAllQuizForAdmin();
-    console.log("resfetchquiz", res);
     if (res && res.EC === 0) {
       setListQuiz(res.DT);
     }

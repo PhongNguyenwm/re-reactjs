@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Select from "react-select";
 import "./QuizQA.scss";
 import { MdPostAdd } from "react-icons/md";
@@ -11,9 +11,8 @@ import _ from "lodash";
 import Lightbox from "react-awesome-lightbox";
 import {
   getAllQuizForAdmin,
-  postCreateNewAnswerForQuestion,
-  postCreateNewQuestionForQuiz,
   getQuizWithQA,
+  postUpsertQA,
 } from "../../../../services/apiService";
 import { toast } from "react-toastify";
 
@@ -40,30 +39,13 @@ const QuizQA = (props) => {
     fetchQuiz();
   }, []);
 
-  useEffect(() => {
-    if (selectedQuiz && selectedQuiz.value) {
-      fetchQuizWithQA();
-    }
-  }, [selectedQuiz]);
-
-  async function urltoFile(url, filename, mimeType) {
-    return fetch(url)
-      .then(function (res) {
-        return res.arrayBuffer();
-      })
-      .then(function (buf) {
-        return new File([buf], filename, { type: mimeType });
-      });
-  }
-
-  const fetchQuizWithQA = async () => {
+  const fetchQuizWithQA = useCallback(async () => {
     let res = await getQuizWithQA(selectedQuiz.value);
     if (res && res.EC === 0) {
       //! convert base64 img to fileObj img
       let newQA = [];
       for (let i = 0; i < res.DT.qa.length; i++) {
         let q = res.DT.qa[i];
-        console.log(q);
         if (q.imageFile) {
           q.imageName = `Question-${q.id}.jpg`;
           q.imageFile = await urltoFile(
@@ -75,10 +57,24 @@ const QuizQA = (props) => {
         newQA.push(q);
       }
       setQuestions(newQA);
-      console.log("res:", res);
-      console.log(questions);
     }
-  };
+  }, [selectedQuiz]);
+
+  useEffect(() => {
+    if (selectedQuiz && selectedQuiz.value) {
+      fetchQuizWithQA();
+    }
+  }, [selectedQuiz, fetchQuizWithQA]);
+
+  async function urltoFile(url, filename, mimeType) {
+    return fetch(url)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], filename, { type: mimeType });
+      });
+  }
 
   const fetchQuiz = async () => {
     let res = await getAllQuizForAdmin();
@@ -94,7 +90,6 @@ const QuizQA = (props) => {
   };
 
   const hanldeAddRemoveQuestion = (type, id) => {
-    console.log(type, id);
     if (type === "ADD") {
       const newQuestion = {
         id: uuidv4(),
@@ -176,7 +171,6 @@ const QuizQA = (props) => {
   };
 
   const hanldeSubmitQuestionForQuiz = async () => {
-    console.log(questions, selectedQuiz.value);
     // validate selectedQuiz
     if (_.isEmpty(selectedQuiz)) {
       toast.error("Please select a quiz");
@@ -202,6 +196,7 @@ const QuizQA = (props) => {
     let isValidAnswer = true;
     let indexQ = 0,
       indexA = 0;
+
     for (let i = 0; i < questions.length; i++) {
       for (let j = 0; j < questions[i].answers.length; j++) {
         if (!questions[i].answers[j].description) {
@@ -221,31 +216,36 @@ const QuizQA = (props) => {
     }
 
     // submit question
-    for (const question of questions) {
-      const resQuestion = await postCreateNewQuestionForQuiz(
-        +selectedQuiz.value,
-        question.description,
-        question.imageFile
-      );
-      // submit answers
-      for (const answer of question.answers) {
-        await postCreateNewAnswerForQuestion(
-          answer.description,
-          answer.isCorrect,
-          resQuestion.DT.id
+    let questionsClone = _.cloneDeep(questions);
+    for (let i = 0; i < questionsClone.length; i++) {
+      if (questionsClone[i].imageFile) {
+        questionsClone[i].imageFile = await toBase64(
+          questionsClone[i].imageFile
         );
       }
     }
-    toast.success("Question & Answer was created successfully!");
-    setQuestions(initQuestion);
+    let res = await postUpsertQA({
+      quizId: selectedQuiz.value,
+      questions: questionsClone,
+    });
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      fetchQuizWithQA();
+    }
   };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const handlePreviewImg = (questionId) => {
     let questionsClone = _.cloneDeep(questions);
     let index = questionsClone.findIndex((item) => item.id === questionId);
     if (index > -1) {
-      const imageFile = questionsClone[index].imageFile;
-      console.log("Previewing image file:", imageFile, questionsClone);
       setDataImgPreview({
         title: questionsClone[index].imageName,
         url: URL.createObjectURL(questionsClone[index].imageFile),
