@@ -86,7 +86,6 @@ const postCreateNewQuestionForQuiz = (quizId, desc, img) => {
   data.append("description", desc);
   data.append("questionImage", img);
   return axios.post("api/v1/question", data);
-  console.log(data);
 };
 
 const postCreateNewAnswerForQuestion = (
@@ -99,6 +98,14 @@ const postCreateNewAnswerForQuestion = (
     correct_answer,
     question_id,
   });
+};
+
+const postAssignQuiz = (quizId, userId) => {
+  return axios.post(`api/v1/quiz-assign-to-user`, { quizId, userId });
+};
+
+const getQuizWithQA = (quizId) => {
+  return axios.get(`api/v1/quiz-with-qa/${quizId}`);
 };
 
 export {
@@ -118,4 +125,6 @@ export {
   deleteQuizForAdmin,
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
+  postAssignQuiz,
+  getQuizWithQA,
 };
