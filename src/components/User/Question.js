@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import _ from "lodash";
 import "./DetailQuiz.scss";
+import Lightbox from "react-awesome-lightbox";
 
 const Question = (props) => {
   const { data, index } = props;
+
+  const [isPreviewImg, setIsPreviewImg] = useState(false);
+
   if (_.isEmpty(data)) {
     return <></>;
   }
@@ -16,7 +20,19 @@ const Question = (props) => {
     <>
       {data.img ? (
         <div className="q-img">
-          <img src={`data:image/jpeg;base64,${data.img}`} alt="" />
+          <img
+            onClick={() => setIsPreviewImg(true)}
+            src={`data:image/jpeg;base64,${data.img}`}
+            alt=""
+            style={{ cursor: "pointer" }}
+          />
+          {isPreviewImg === true && (
+            <Lightbox
+              image={`data:image/jpeg;base64,${data.img}`}
+              title={`Question image`}
+              onClose={() => setIsPreviewImg(false)}
+            />
+          )}
         </div>
       ) : (
         <div className="q-img"></div>
