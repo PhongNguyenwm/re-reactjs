@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import App from "./App";
 import Admin from "./components/Admin/Admin";
-import User from "./components/User/User";
 import HomePage from "./components/Home/HomePage";
 import Dashboard from "./components/Admin/Content/Dashboard";
 import ManageUser from "./components/Admin/Content/ManageUser";
@@ -14,6 +13,7 @@ import ListQuiz from "./components/User/ListQuiz";
 import DetailQuiz from "./components/User/DetailQuiz";
 import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz";
 import Question from "./components/Admin/Content/Question/Question";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const NotFound = () => {
   return (
@@ -29,10 +29,24 @@ const Layout = (props) => {
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="user" element={<ListQuiz />} />
+          <Route
+            path="user"
+            element={
+              <PrivateRoute>
+                <ListQuiz />
+              </PrivateRoute>
+            }
+          />
         </Route>
         <Route path="quiz/:id" element={<DetailQuiz />} />
-        <Route path="admin" element={<Admin />}>
+        <Route
+          path="admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<Dashboard />} />
           <Route path="manage-user" element={<ManageUser />} />
           <Route path="manage-quizzes" element={<ManageQuiz />} />
