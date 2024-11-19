@@ -56,6 +56,12 @@ const Login = (props) => {
     setShowPassword(!showPassword);
   };
 
+  const handleKeyDown = (e) => {
+    if (e && e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="header">
@@ -81,6 +87,7 @@ const Login = (props) => {
             className="form-control add-icon"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e)}
           />
           <div className="icon" onClick={() => toggleShowPassword()}>
             {!showPassword ? <BsEyeFill /> : <BsEyeSlashFill />}
